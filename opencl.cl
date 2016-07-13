@@ -330,14 +330,16 @@ __kernel void find_moves(__global int* counter, __global int* states, __global i
             // checking castles
             if (flags[3-color] == 0 && state[location+1] == 0 && state[location+2] == 0) {
                 if (!(is_check(state, LOC_SIZE*location + location+2, king_location, color) ||
-                    is_check(state, LOC_SIZE*location + location+1, king_location, color))) {  // can't pass thru
+                    is_check(state, LOC_SIZE*location + location+1, king_location, color) ||
+                    is_check(state, LOC_SIZE*location + location, king_location, color))) {  // can't be in or pass thru
                     local_moves[m++] = LOC_SIZE*location + location+2; // add move
                 }
             }
             if (flags[2-color] == 0 && state[location-1] == 0 && state[location-2] == 0
                                                                             && state[location-3] == 0) {
                 if (!(is_check(state, LOC_SIZE*location + location-2, king_location, color) ||
-                    is_check(state, LOC_SIZE*location + location-1, king_location, color))) {  // can't pass thru
+                    is_check(state, LOC_SIZE*location + location-1, king_location, color) ||
+                    is_check(state, LOC_SIZE*location + location, king_location, color))) {  // can't be in or pass thru
                     local_moves[m++] = LOC_SIZE*location + location-2; // add move
                 }
             }
@@ -398,7 +400,7 @@ __kernel void apply_moves(__global int* counter, __global int* states, __global 
             if (start+co*35 == 60 || start+co*35 == 56) {    // disable long castling
                 flags[2-co] = 1;
             }
-            for (int e = 56+25*co; e < 64+25*co; e++) {     // remove en passant flags if we didn't take advantage
+            for (int e = 56+15*co; e < 64+15*co; e++) {     // remove en passant flags if we didn't take advantage
                 if (new_states[id*MOVES_SIZE+m*BOARD_SIZE+e] == -8*co) {
                     new_states[id*MOVES_SIZE+m*BOARD_SIZE+e] = 0;
                 }

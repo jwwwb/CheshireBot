@@ -64,11 +64,13 @@ class ChessBoardCL:
         pass
 
     def set_fen_state(self, fen):
+        print fen
         int_piece = {'K': 7, 'Q': 6, 'R': 5, 'B': 4, 'N': 3, 'P': 2, 'k': -7, 'q': -6, 'r': -5, 'b': -4, 'n': -3, 'p': -2}
+        temp = fen.split(' ', 1)
+        print temp
         board, flags = fen.split(' ', 1)
         board = board.split('/')
         rank = 8
-        print self.state
         for row in board:
             file_ = 1
             for field in row:
@@ -99,6 +101,11 @@ class MoveArray:
         goal_array = self.move_array % 128
         out = np.array([start_array, goal_array])
         return out.transpose()
+
+    def convert2(self):
+        start_array = self.move_array//128
+        goal_array = self.move_array % 128
+        return start_array, goal_array
 
 
 class PerfTester:
@@ -165,11 +172,26 @@ class PerfTester:
             print '{}: {} moves'.format(string_move(moves[i]), per)
         print 'Total: {} moves'.format(total_per)
 
+    def deep_split_perft(self, depth, state=None):
+        if state is None:
+            state = self.game.state
+        raw_moves = self.get_legal_moves(state)
+        raw_new_states = self.apply_moves(state, raw_moves)
+        raw_new_states = raw_new_states.reshape(len(raw_new_states)//BOARD_SIZE, BOARD_SIZE)
+        moves = raw_moves[raw_moves != 0]
+        new_states = raw_new_states[raw_moves != 0]
+        total_per = 0
+        for i in range(len(moves)):
+            per = self.deep_perft(depth-6, 5, new_states[i])
+            total_per += per
+            print '{}: {} moves'.format(string_move(moves[i]), per)
+        print 'Total: {} moves'.format(total_per)
+
     def deep_perft(self, depth1, depth2, state=None):
         self.store_final = True
         self.perft(depth1, state)
         res = 0
-        print(len(self.final_states))
+        # print(len(self.final_states))
         for substate in self.final_states:
             res += self.perft(depth2, substate)
         return res
@@ -196,7 +218,7 @@ class PerfTester:
                 new_states = self.apply_moves(states, moves)
                 reshape = new_states.reshape(len(new_states)//BOARD_SIZE, BOARD_SIZE)
                 self.final_states = reshape[moves != 0]
-                print 'Final states array size: {}'.format(self.final_states.nbytes)
+                # print 'Final states array size: {}'.format(self.final_states.nbytes)
                 self.store_final = False
 
 
@@ -205,15 +227,26 @@ main function:
 '''
 
 
-def main2():
+def main3():
+    perft = PerfTester()
+    # perft.deep_split_perft(7)
+
+    print('Applying move G1-F3 and repeating')
+    perft.apply_move(int_move('G1-F3'))
+    perft.split_perft(6)
+
+
+def main():
     import os
     os.environ['PYOPENCL_COMPILER_OUTPUT'] = '1'
     os.environ['PYOPENCL_CTX'] = '0:0'
     perft = PerfTester()
-    # for i in range(1,6):
-    #     print('Perft for depth={} is: {}'.format(i, perft.perft(i)))
-    i = 2
+    for i in range(1, 6):
+        print('Perft for depth={} is: {}'.format(i, perft.perft(i)))
+    i = 1
     j = 5
+    print('Deep perft for depth={} is: {}'.format(i+j, perft.deep_perft(i, j)))
+    i = 2
     print('Deep perft for depth={} is: {}'.format(i+j, perft.deep_perft(i, j)))
 
 
@@ -238,7 +271,7 @@ def main1():
     print 'If E8-E7 is in here, that means the king is moving into the knights check. Fix it!'
 
 
-def main():
+def main4():
     board = ChessBoardCL()
     board.output()
     # board.set_fen_state('3k4/3p4/8/K1P4r/8/8/8/8 b - - 0 1')
