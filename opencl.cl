@@ -50,12 +50,12 @@ bool is_check(int state[], int move, int kl, int co) {
     if (local_state[start]*co == 7 && goal-start == 2) {  // short castle
         local_state[start+1] = 5*co;
         local_state[goal+1] = 0;
-        flags[3-co] = 1;
+        flags[2-co] = 1;
     }
     if (local_state[start]*co == 7 && goal-start == -2) {  // long castle
         local_state[start-1] = 5*co;
         local_state[goal-2] = 0;
-        flags[2-co] = 1;
+        flags[1-co] = 1;
     }
     /*      flag disables are unnecessary for checking check, as this only looks one move ahead.
 
@@ -63,10 +63,10 @@ bool is_check(int state[], int move, int kl, int co) {
         local_state[start+10*co] = 8*co;
     }
     if (start+co*35 == 60 || start+co*35 == 63) {    // disable short castling
-        flags[3-co] = 1;
+        flags[2-co] = 1;
     }
     if (start+co*35 == 60 || start+co*35 == 56) {    // disable long castling
-        flags[2-co] = 1;
+        flags[1-co] = 1;
     }
     for (int e = 56+25*co; e < 64+25*co; e++) {     // remove en passant flags if we didn't take advantage
         if (local_state[e] == -8*co) {
@@ -180,6 +180,7 @@ __kernel void find_moves(__global int* counter, __global int* states, __global i
         location = attackers[a] / PIECE_SIZE;
         if (attackers[a] % PIECE_SIZE == 2) {   // is pawn
             if (state[location+10*color] == 0) {   // field in front is empty
+                if ((state[location] / 10) * 2 == 11 + 5*color) printf("This is a promotion.\n");
                 if (!is_check(state, LOC_SIZE*location + location + 10*color, king_location, color)) {
                     local_moves[m++] = LOC_SIZE*location + location + 10*color; // add move
                 }
@@ -328,15 +329,14 @@ __kernel void find_moves(__global int* counter, __global int* states, __global i
                 }
             }
             // checking castles
-            if (flags[3-color] == 0 && state[location+1] == 0 && state[location+2] == 0) {
+            if (flags[2-color] == 0 && state[location+1] == 0 && state[location+2] == 0) {
                 if (!(is_check(state, LOC_SIZE*location + location+2, king_location, color) ||
                     is_check(state, LOC_SIZE*location + location+1, king_location, color) ||
                     is_check(state, LOC_SIZE*location + location, king_location, color))) {  // can't be in or pass thru
                     local_moves[m++] = LOC_SIZE*location + location+2; // add move
                 }
             }
-            if (flags[2-color] == 0 && state[location-1] == 0 && state[location-2] == 0
-                                                                            && state[location-3] == 0) {
+            if (flags[1-color] == 0 && state[location-1] == 0 && state[location-2] == 0 && state[location-3] == 0) {
                 if (!(is_check(state, LOC_SIZE*location + location-2, king_location, color) ||
                     is_check(state, LOC_SIZE*location + location-1, king_location, color) ||
                     is_check(state, LOC_SIZE*location + location, king_location, color))) {  // can't be in or pass thru
@@ -387,18 +387,18 @@ __kernel void apply_moves(__global int* counter, __global int* states, __global 
             if (new_states[id*MOVES_SIZE+m*BOARD_SIZE+start]*co == 7 && goal-start == 2) {  // short castle
                 new_states[id*MOVES_SIZE+m*BOARD_SIZE+start+1] = 5*co;
                 new_states[id*MOVES_SIZE+m*BOARD_SIZE+goal+1] = 0;
-                flags[3-co] = 1;
+                flags[2-co] = 1;
             }
             if (new_states[id*MOVES_SIZE+m*BOARD_SIZE+start]*co == 7 && goal-start == -2) {  // long castle
                 new_states[id*MOVES_SIZE+m*BOARD_SIZE+start-1] = 5*co;
                 new_states[id*MOVES_SIZE+m*BOARD_SIZE+goal-2] = 0;
-                flags[2-co] = 1;
+                flags[1-co] = 1;
             }
             if (start+co*35 == 60 || start+co*35 == 63) {    // disable short castling
-                flags[3-co] = 1;
+                flags[2-co] = 1;
             }
             if (start+co*35 == 60 || start+co*35 == 56) {    // disable long castling
-                flags[2-co] = 1;
+                flags[1-co] = 1;
             }
             for (int e = 56+15*co; e < 64+15*co; e++) {     // remove en passant flags if we didn't take advantage
                 if (new_states[id*MOVES_SIZE+m*BOARD_SIZE+e] == -8*co) {

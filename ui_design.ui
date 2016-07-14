@@ -64,6 +64,20 @@
          </widget>
         </item>
         <item>
+         <widget class="QPushButton" name="pushButtonState">
+          <property name="text">
+           <string>State</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButtonPrintMoves">
+          <property name="text">
+           <string>Print All Moves</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QSpinBox" name="spinBoxPerft">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -75,7 +89,7 @@
            <number>1</number>
           </property>
           <property name="maximum">
-           <number>5</number>
+           <number>7</number>
           </property>
           <property name="value">
            <number>5</number>
@@ -101,7 +115,7 @@
            <number>1</number>
           </property>
           <property name="maximum">
-           <number>5</number>
+           <number>8</number>
           </property>
           <property name="value">
            <number>5</number>
@@ -1461,6 +1475,7 @@
     </property>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
+    <addaction name="actionPrint_State"/>
    </widget>
    <addaction name="menuFile"/>
   </widget>
@@ -1468,6 +1483,11 @@
   <action name="actionExit">
    <property name="text">
     <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionPrint_State">
+   <property name="text">
+    <string>Print State</string>
    </property>
   </action>
  </widget>

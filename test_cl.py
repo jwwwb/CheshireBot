@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
 '''
-#to-do: read FEN game states, probably also write them.
-        GUI
+#to-do: output FEN game states.
+        promotion
+        figure out why albert's example state fails at depth=4
         try on different architecture
 '''
 
@@ -66,8 +67,6 @@ class ChessBoardCL:
     def set_fen_state(self, fen):
         print fen
         int_piece = {'K': 7, 'Q': 6, 'R': 5, 'B': 4, 'N': 3, 'P': 2, 'k': -7, 'q': -6, 'r': -5, 'b': -4, 'n': -3, 'p': -2}
-        temp = fen.split(' ', 1)
-        print temp
         board, flags = fen.split(' ', 1)
         board = board.split('/')
         rank = 8
@@ -84,10 +83,10 @@ class ChessBoardCL:
             rank -= 1
         flags = flags.split(' ')
         self.state[COLOR_OFFSET] = {'w': 1, 'b': -1}[flags[0]]
-        self.state[BOARD_SIZE-NUM_FLAGS+0] = 1 if 'K' in flags[1] else 0
-        self.state[BOARD_SIZE-NUM_FLAGS+1] = 1 if 'Q' in flags[1] else 0
-        self.state[BOARD_SIZE-NUM_FLAGS+2] = 1 if 'k' in flags[1] else 0
-        self.state[BOARD_SIZE-NUM_FLAGS+3] = 1 if 'q' in flags[1] else 0
+        self.state[BOARD_SIZE-NUM_FLAGS+0] = 0 if 'K' in flags[1] else 1
+        self.state[BOARD_SIZE-NUM_FLAGS+1] = 0 if 'Q' in flags[1] else 1
+        self.state[BOARD_SIZE-NUM_FLAGS+2] = 0 if 'k' in flags[1] else 1
+        self.state[BOARD_SIZE-NUM_FLAGS+3] = 0 if 'q' in flags[1] else 1
         if flags[2] != '-':
             self.state[ord(flags[2][0])-86+10*int(flags[2][1])] = 8 if flags[2][1] == '3' else -8
 

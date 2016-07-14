@@ -18,10 +18,12 @@ class MyWindow(QtGui.QMainWindow):
                 self.legal_fields.append(row+field)
         self.set_up_ui()
         self.pushButtonUndo.clicked.connect(self.undo)
+        self.pushButtonPrintMoves.clicked.connect(self.print_moves)
         self.pushButtonShowMoves.clicked.connect(self.show_moves)
         self.pushButtonPerft.clicked.connect(self.test_perft)
         self.pushButtonSplitPerft.clicked.connect(self.split_perft)
         self.pushButtonLoad.clicked.connect(self.load_fen)
+        self.pushButtonState.clicked.connect(self.print_state)
 
     # beginning of auto-generated code #
     def set_up_ui(self):
@@ -357,6 +359,13 @@ class MyWindow(QtGui.QMainWindow):
                     self.color_field(goal, 'goal')
             self.showing_moves = True
 
+    def print_moves(self):
+        all_moves = self.perft.get_legal_moves()
+        test_cl.output_moves(all_moves[all_moves != 0])
+
+    def print_state(self):
+        print(self.perft.game.state)
+
     def undo(self):
         if self.field_selected:
             num = self.field_selected
@@ -418,9 +427,9 @@ class MyWindow(QtGui.QMainWindow):
 
     def load_fen(self):
         fen = str(self.lineEditFEN.text())
-        print fen
         self.perft.game.set_fen_state(fen)
         self.update_board()
+        # print(self.perft.game.state)
 
 if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
