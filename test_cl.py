@@ -4,6 +4,7 @@
 #to-do: output FEN game states.
         promotion
         figure out why albert's example state fails at depth=4
+        turns out the two points above are related / the same.
         try on different architecture
 '''
 

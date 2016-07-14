@@ -76,6 +76,7 @@ bool is_check(int state[], int move, int kl, int co) {
     */
     local_state[goal] = local_state[start];         // finally just move the standard move, this should always be necessary
     local_state[start] = 0;
+    if ((goal / 10) * 2 == 11 + 7*co && local_state[goal] == 2*co) local_state[goal] = 6*co;
     local_state[COLOR_OFFSET] = -local_state[COLOR_OFFSET];
     // return flags to board local_state again:
     for (int f = 0; f < NUM_FLAGS; f++) local_state[BOARD_SIZE-NUM_FLAGS+f] = flags[f];
@@ -180,7 +181,8 @@ __kernel void find_moves(__global int* counter, __global int* states, __global i
         location = attackers[a] / PIECE_SIZE;
         if (attackers[a] % PIECE_SIZE == 2) {   // is pawn
             if (state[location+10*color] == 0) {   // field in front is empty
-                if ((state[location] / 10) * 2 == 11 + 5*color) printf("This is a promotion.\n");
+//                printf("Why is this not triggering? (location / 10) * 2 = %d, 11 + 5*color = %d.\n", (location / 10) * 2, 11 + 5*color);
+                if ((location / 10) * 2 == 11 + 5*color) printf("This is a promotion.\n");
                 if (!is_check(state, LOC_SIZE*location + location + 10*color, king_location, color)) {
                     local_moves[m++] = LOC_SIZE*location + location + 10*color; // add move
                 }
@@ -193,11 +195,15 @@ __kernel void find_moves(__global int* counter, __global int* states, __global i
                 }
             }
             if (state[location+11*color] * color <= -2) {   // field diagonal right is occupied by opponent
+//                printf("Why is this not triggering? (location / 10) * 2 = %d, 11 + 5*color = %d.\n", (location / 10) * 2, 11 + 5*color);
+                if ((location / 10) * 2 == 11 + 5*color) printf("This is a promotion.\n");
                 if (!is_check(state, LOC_SIZE*location + location + 11*color, king_location, color)) {
                     local_moves[m++] = LOC_SIZE*location + location + 11*color; // add move
                 }
             }
             if (state[location+9*color] * color <= -2) {   // field diagonal left is occupied by opponent
+//                printf("Why is this not triggering? (location / 10) * 2 = %d, 11 + 5*color = %d.\n", (location / 10) * 2, 11 + 5*color);
+                if ((location / 10) * 2 == 11 + 5*color) printf("This is a promotion.\n");
                 if (!is_check(state, LOC_SIZE*location + location + 9*color, king_location, color)) {
                     local_moves[m++] = LOC_SIZE*location + location + 9*color; // add move
                 }
@@ -407,6 +413,7 @@ __kernel void apply_moves(__global int* counter, __global int* states, __global 
             }
             new_states[id*MOVES_SIZE+m*BOARD_SIZE+goal] = new_states[id*MOVES_SIZE+m*BOARD_SIZE+start];         // finally just move the standard move, this should always be necessary
             new_states[id*MOVES_SIZE+m*BOARD_SIZE+start] = 0;
+            if ((id*MOVES_SIZE+m*BOARD_SIZE+goal / 10) * 2 == 11 + 7*co && new_states[id*MOVES_SIZE+m*BOARD_SIZE+goal] == 2*co) new_states[id*MOVES_SIZE+m*BOARD_SIZE+goal] = 6*co;
             new_states[id*MOVES_SIZE+m*BOARD_SIZE+COLOR_OFFSET] = -new_states[id*MOVES_SIZE+m*BOARD_SIZE+COLOR_OFFSET];     // switch color for the next turn
             // return flags to board local_state again:
             for (int f = 0; f < NUM_FLAGS; f++) new_states[id*MOVES_SIZE+m*BOARD_SIZE+BOARD_SIZE-NUM_FLAGS+f] = flags[f];
