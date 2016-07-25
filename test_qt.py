@@ -9,10 +9,12 @@ class MyWindow(QtGui.QMainWindow):
     def __init__(self):
         super(MyWindow, self).__init__()
         uic.loadUi('ui_design.ui', self)
+        self.setWindowTitle('Cheshire - Experimental Chess Engine')
         self.perft = test_cl.PerfTester()
         self.field_selected = False
         self.showing_moves = False
         self.legal_fields = []
+        self.p = None   # pop-up window handle for promotion choice
         for row in range(20, 100, 10):
             for field in range(1, 9):
                 self.legal_fields.append(row+field)
@@ -23,7 +25,14 @@ class MyWindow(QtGui.QMainWindow):
         self.pushButtonPerft.clicked.connect(self.test_perft)
         self.pushButtonSplitPerft.clicked.connect(self.split_perft)
         self.pushButtonLoad.clicked.connect(self.load_fen)
+        self.pushButtonGenerate.clicked.connect(self.generate_fen)
         self.pushButtonState.clicked.connect(self.print_state)
+        self.group = QtGui.QButtonGroup()
+        self.group.addButton(self.radioButtonQueen)
+        self.group.addButton(self.radioButtonRook)
+        self.group.addButton(self.radioButtonBishop)
+        self.group.addButton(self.radioButtonKnight)
+        self.group.setExclusive(True)
 
     # beginning of auto-generated code #
     def set_up_ui(self):
@@ -389,7 +398,6 @@ class MyWindow(QtGui.QMainWindow):
             eval('self.F{}.setStyleSheet("background-color: {}")'.format(num, color))
 
     def clicked(self, num):
-        print 'user clicked {}'.format(num)
         if not self.field_selected:
             self.field_selected = num
             self.color_field(num, 'start')
@@ -400,7 +408,29 @@ class MyWindow(QtGui.QMainWindow):
             if self.field_selected in all_starts:
                 goals = all_goals[all_starts == self.field_selected]
             if num in goals:
-                self.perft.apply_move(self.field_selected*128+num)
+                if (num // 10 == 9 and self.perft.game.state[self.field_selected] == 2) or \
+                   (num // 10 == 2 and self.perft.game.state[self.field_selected] == -2):
+                    if self.radioButtonQueen.isChecked():
+                        promotion = 6
+                    elif self.radioButtonRook.isChecked():
+                        promotion = 5
+                    elif self.radioButtonBishop.isChecked():
+                        promotion = 4
+                    elif self.radioButtonKnight.isChecked():
+                        promotion = 3
+                    else:
+                        promotion = None
+                        print('Please select a piece to promote to before moving to a promotion field!')
+                    if promotion:
+                        self.perft.apply_move(promotion*128*128+self.field_selected*128+num)
+                        self.group.setExclusive(False)
+                        self.radioButtonRook.setChecked(False)
+                        self.radioButtonBishop.setChecked(False)
+                        self.radioButtonKnight.setChecked(False)
+                        self.radioButtonQueen.setChecked(False)
+                        self.group.setExclusive(True)
+                else:
+                    self.perft.apply_move(self.field_selected*128+num)
                 self.showing_moves = True
                 self.undo()
                 self.update_board()
@@ -431,7 +461,14 @@ class MyWindow(QtGui.QMainWindow):
         self.update_board()
         # print(self.perft.game.state)
 
+    def generate_fen(self):
+        fen = self.perft.game.get_fen_state()
+        self.lineEditFEN.setText(fen)
+
+
 if __name__ == '__main__':
+    import os
+    os.environ['PYOPENCL_COMPILER_OUTPUT'] = '1'
     app = QtGui.QApplication(sys.argv)
     window = MyWindow()
     window.show()

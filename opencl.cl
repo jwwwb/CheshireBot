@@ -12,7 +12,19 @@
 // int occupancy = -7:-2 for black, 2:7 for white pieces, 0 for empty, -1 for OoB
 // int color = -1 if it's black's turn, 1 if it's white's turn
 // int board[128] = 10 + 10*rank + file. max value 120, so we use 127 for flags.
-// int flags[6] = white: A en passant, H en passant, black: A en passant, H en passant
+// int flags[4] = white: A castle, H castle, black: A castle, H castle
+//
+// rethink of certain things: move needs to have extra information for piece choice
+// in castling, board can contain just a single flag for en passant, since only one
+// is ever possible at a time, thus the piece 8/-8 can be removed, and full use
+// of all 8 spots for flags can be made. (In the future, the 4 castling flags could
+// easily be combined to one 4 bit number, freeing up 3 more flags, for example
+// score and turn counters)
+
+// to-do:   remove 8/-8 en passant fields
+//
+
+
 
 
 #define LOC_SIZE 128
@@ -21,7 +33,16 @@
 #define PIECE_SIZE 16
 #define PIECE_OFFSET 8
 #define NUM_FLAGS 4 // maximum of 8!!
+#define CHECK_OFFSET 120
+#define MATE_OFFSET 121
 #define COLOR_OFFSET 122
+#define PASSANT_OFFSET 123
+#define WHITE_A_CASTLE 124
+#define WHITE_H_CASTLE 125
+#define BLACK_A_CASTLE 126
+#define BLACK_H_CASTLE 127
+#define PINF 1048575 // not entirely sure if I need to define this myself, I'll just give it a large integer value
+#define NINF -1048576 // ditto
 
 bool is_check(int state[], int move, int kl, int co);
 
@@ -35,7 +56,7 @@ bool is_check(int state[], int move, int kl, int co) {
     // apply move
     int local_state[BOARD_SIZE];
     for (int r = 0; r < BOARD_SIZE; r++) local_state[r] = state[r];
-    int start = move / LOC_SIZE;
+    int start = (move / LOC_SIZE) % LOC_SIZE;
     int goal = move % LOC_SIZE;
     int flags[NUM_FLAGS];
     int b = 0;
@@ -44,7 +65,7 @@ bool is_check(int state[], int move, int kl, int co) {
 
     for (int f = 0; f < NUM_FLAGS; f++) flags[f] = local_state[BOARD_SIZE-NUM_FLAGS+f];
 
-    if (local_state[goal]*co == -8 && local_state[start]*co == 2) {     // en passant
+    if (local_state[PASSANT_OFFSET] == local_state[goal-10*co] && local_state[start]*co == 2) {     // en passant
         local_state[goal-co*10] = 0;
     }
     if (local_state[start]*co == 7 && goal-start == 2) {  // short castle
@@ -154,6 +175,7 @@ __kernel void find_moves(__global int* counter, __global int* states, __global i
     int id = get_global_id(0);
     int attackers[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};   // initialization likely unnecessary
     int att_ind = 0;
+    int p;
     int state[BOARD_SIZE];
     int local_moves[MOVES_SIZE];
     int color = states[id*BOARD_SIZE+COLOR_OFFSET];
@@ -181,10 +203,16 @@ __kernel void find_moves(__global int* counter, __global int* states, __global i
         location = attackers[a] / PIECE_SIZE;
         if (attackers[a] % PIECE_SIZE == 2) {   // is pawn
             if (state[location+10*color] == 0) {   // field in front is empty
-//                printf("Why is this not triggering? (location / 10) * 2 = %d, 11 + 5*color = %d.\n", (location / 10) * 2, 11 + 5*color);
-                if ((location / 10) * 2 == 11 + 5*color) printf("This is a promotion.\n");
                 if (!is_check(state, LOC_SIZE*location + location + 10*color, king_location, color)) {
-                    local_moves[m++] = LOC_SIZE*location + location + 10*color; // add move
+                    if ((location / 10) * 2 == 11 + 5*color) {
+                        printf("This is a promotion.\n");
+                        for (p = 3; p < 7; p++) {
+                            printf("Adding move with piece %d.\n", p);
+                            local_moves[m++] = LOC_SIZE*LOC_SIZE*p + LOC_SIZE*location + location + 10*color; // add promotion moves
+                        }
+                    } else {
+                        local_moves[m++] = LOC_SIZE*location + location + 10*color; // add move
+                    }
                 }
                 if (((location / 10 == 3) && color == 1) || ((location / 10 == 8) && color == -1)) {   // is still in start
                     if (state[location+20*color] == 0) {     // 2 fields ahead is empty
@@ -194,18 +222,28 @@ __kernel void find_moves(__global int* counter, __global int* states, __global i
                     }
                 }
             }
-            if (state[location+11*color] * color <= -2) {   // field diagonal right is occupied by opponent
-//                printf("Why is this not triggering? (location / 10) * 2 = %d, 11 + 5*color = %d.\n", (location / 10) * 2, 11 + 5*color);
-                if ((location / 10) * 2 == 11 + 5*color) printf("This is a promotion.\n");
+            if (state[location+11*color] * color <= -2 || state[PASSANT_OFFSET] == location+11*color) {   // field diagonal right is occupied by opponent
                 if (!is_check(state, LOC_SIZE*location + location + 11*color, king_location, color)) {
-                    local_moves[m++] = LOC_SIZE*location + location + 11*color; // add move
+                    if ((location / 10) * 2 == 11 + 5*color) {
+                        printf("This is a promotion.\n");
+                        for (p = 3; p < 7; p++) {
+                            local_moves[m++] = LOC_SIZE*LOC_SIZE*p + LOC_SIZE*location + location + 11*color; // add promotion moves
+                        }
+                    } else {
+                        local_moves[m++] = LOC_SIZE*location + location + 11*color; // add move
+                    }
                 }
             }
-            if (state[location+9*color] * color <= -2) {   // field diagonal left is occupied by opponent
-//                printf("Why is this not triggering? (location / 10) * 2 = %d, 11 + 5*color = %d.\n", (location / 10) * 2, 11 + 5*color);
-                if ((location / 10) * 2 == 11 + 5*color) printf("This is a promotion.\n");
+            if (state[location+9*color] * color <= -2 || state[PASSANT_OFFSET] == location+9*color) {   // field diagonal left is occupied by opponent
                 if (!is_check(state, LOC_SIZE*location + location + 9*color, king_location, color)) {
-                    local_moves[m++] = LOC_SIZE*location + location + 9*color; // add move
+                    if ((location / 10) * 2 == 11 + 5*color) {
+                        printf("This is a promotion.\n");
+                        for (p = 3; p < 7; p++) {
+                            local_moves[m++] = LOC_SIZE*LOC_SIZE*p + LOC_SIZE*location + location + 9*color; // add promotion moves
+                        }
+                    } else {
+                        local_moves[m++] = LOC_SIZE*location + location + 9*color; // add move
+                    }
                 }
             }
         } else if (attackers[a] % PIECE_SIZE == 3) {   // is knight
@@ -369,26 +407,32 @@ __kernel void apply_moves(__global int* counter, __global int* states, __global 
         // apply move
     int local_state[BOARD_SIZE];
     int local_moves[MOVES_SIZE];
-    int move, start, goal, co, m, r, f, flags[NUM_FLAGS];
+    int en_passant = 0;
+    int move, start, goal, promotion, co, m, r, f, flags[NUM_FLAGS];
     for (r = 0; r < BOARD_SIZE; r++) local_state[r] = states[id+r];
     for (m = 0; m < MOVES_SIZE; m++) local_moves[m] = moves[id+m];
     for (m = 0; m < MOVES_SIZE; m++) {
         move = local_moves[m];
         if (move == 0) {
             for (r = 0; r < BOARD_SIZE; r++) new_states[id*MOVES_SIZE+m*BOARD_SIZE+r] = 0;
+            // currently a zero move creates an empty board representation. perhaps it could also
+            // create a copy of the current board... not quite sure if useful. Let's see what
+            // happens when I refactor the check check.
         } else {
-            start = move / LOC_SIZE;
+            start = (move / LOC_SIZE) % LOC_SIZE;
             goal = move % LOC_SIZE;
+            promotion = move / (LOC_SIZE*LOC_SIZE);
+            en_passant = 0;
             co = local_state[COLOR_OFFSET];
             for (f = 0; f < NUM_FLAGS; f++) flags[f] = local_state[BOARD_SIZE-NUM_FLAGS+f];
 
             for (r = 0; r < BOARD_SIZE; r++) new_states[id*MOVES_SIZE+m*BOARD_SIZE+r] = local_state[r];
 
-            if (new_states[id*MOVES_SIZE+m*BOARD_SIZE+goal]*co == -8 && new_states[id*MOVES_SIZE+m*BOARD_SIZE+start]*co == 2) {     // en passant
+            if (new_states[id*MOVES_SIZE+m*BOARD_SIZE+PASSANT_OFFSET] == goal && new_states[id*MOVES_SIZE+m*BOARD_SIZE+start]*co == 2) {     // en passant
                 new_states[id*MOVES_SIZE+m*BOARD_SIZE+goal-co*10] = 0;
             }
             if ((start/10)*2+5*co == 11 && (goal/10)*2+co == 11 && new_states[id*MOVES_SIZE+m*BOARD_SIZE+start]*co == 2) {  // double hop
-                new_states[id*MOVES_SIZE+m*BOARD_SIZE+start+10*co] = 8*co;
+                en_passant = start+10*co;    // set en-passant flag
             }
             if (new_states[id*MOVES_SIZE+m*BOARD_SIZE+start]*co == 7 && goal-start == 2) {  // short castle
                 new_states[id*MOVES_SIZE+m*BOARD_SIZE+start+1] = 5*co;
@@ -406,17 +450,64 @@ __kernel void apply_moves(__global int* counter, __global int* states, __global 
             if (start+co*35 == 60 || start+co*35 == 56) {    // disable long castling
                 flags[1-co] = 1;
             }
-            for (int e = 56+15*co; e < 64+15*co; e++) {     // remove en passant flags if we didn't take advantage
-                if (new_states[id*MOVES_SIZE+m*BOARD_SIZE+e] == -8*co) {
-                    new_states[id*MOVES_SIZE+m*BOARD_SIZE+e] = 0;
-                }
-            }
             new_states[id*MOVES_SIZE+m*BOARD_SIZE+goal] = new_states[id*MOVES_SIZE+m*BOARD_SIZE+start];         // finally just move the standard move, this should always be necessary
             new_states[id*MOVES_SIZE+m*BOARD_SIZE+start] = 0;
-            if ((id*MOVES_SIZE+m*BOARD_SIZE+goal / 10) * 2 == 11 + 7*co && new_states[id*MOVES_SIZE+m*BOARD_SIZE+goal] == 2*co) new_states[id*MOVES_SIZE+m*BOARD_SIZE+goal] = 6*co;
+//            if ((id*MOVES_SIZE+m*BOARD_SIZE+goal / 10) * 2 == 11 + 7*co && new_states[id*MOVES_SIZE+m*BOARD_SIZE+goal] == 2*co) new_states[id*MOVES_SIZE+m*BOARD_SIZE+goal] = 6*co; // auto-promote to queen
+            if ((id*MOVES_SIZE+m*BOARD_SIZE+goal / 10) * 2 == 11 + 7*co && new_states[id*MOVES_SIZE+m*BOARD_SIZE+goal] == 2*co) {
+                new_states[id*MOVES_SIZE+m*BOARD_SIZE+goal] = promotion*co; // apply promotion
+            }
+            new_states[id*MOVES_SIZE+m*BOARD_SIZE+PASSANT_OFFSET] = 0;      // remove old en passant flags
+            if (en_passant) new_states[id*MOVES_SIZE+m*BOARD_SIZE+PASSANT_OFFSET] = en_passant;     // set new ones if necessary
             new_states[id*MOVES_SIZE+m*BOARD_SIZE+COLOR_OFFSET] = -new_states[id*MOVES_SIZE+m*BOARD_SIZE+COLOR_OFFSET];     // switch color for the next turn
             // return flags to board local_state again:
             for (int f = 0; f < NUM_FLAGS; f++) new_states[id*MOVES_SIZE+m*BOARD_SIZE+BOARD_SIZE-NUM_FLAGS+f] = flags[f];
         }
     }
+}
+
+__kernel void score_board(__global int* counter, __global int* states, __global int* scores){
+    /*
+    This function computes a score value for a bunch of board states, with negative values
+    favoring the black player and positive values favoring the white player.
+    These values are to be used for the minimax algorithm, and then later the alpha-beta
+    pruned minimax, which remain to be seen if they need to be implemented in openCL or python.'
+    Initially this function will simply apply a score per piece on the board (absolute values of
+    1 for each pawn, 3 for each knight and bishop, 5 for each rook, and 9 for each queen) as
+    well as a very high penalty (~inf) for a checkmate.
+    Later some heuristics evaluating certain positions might or might not be added (losing
+    central pawns and opening up the middle of the board should have some penalty)
+    */
+    int id = get_global_id(0)*BOARD_SIZE;
+    int od = get_global_id(0);
+
+    int a = 0;
+    int score = 0;
+    int piece;
+    if (states[id+MATE_OFFSET] == 1) {
+        score = PINF;
+    } else if (states[id+MATE_OFFSET] == -1) {
+        score = NINF;
+    } else {
+        for (a = 0; a < BOARD_SIZE; a++) {
+            piece = states[id+a];
+            if (piece == 2) {
+                score++;
+            } else if (piece == -2) {
+                score--;
+            } else if (piece == 3 || piece == 4) {
+                score += 3;
+            } else if (piece == -3 || piece == -4) {
+                score -= 3;
+            } else if (piece == 5) {
+                score += 5;
+            } else if (piece == -5) {
+                score -= 5;
+            } else if (piece == 6) {
+                score += 9;
+            } else if (piece == -6) {
+                score -= 9;
+            }
+        }
+    }
+    scores[od] = score;
 }

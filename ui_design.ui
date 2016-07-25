@@ -9,15 +9,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>652</width>
-    <height>600</height>
+    <width>521</width>
+    <height>641</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>755</width>
+    <height>641</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
@@ -28,6 +34,13 @@
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QPushButton" name="pushButtonGenerate">
+          <property name="text">
+           <string>Generate</string>
+          </property>
+         </widget>
+        </item>
         <item>
          <widget class="QLabel" name="labelFEN">
           <property name="text">
@@ -48,7 +61,14 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QPushButton" name="pushButtonShowMoves">
+          <property name="text">
+           <string>Show Legal Moves</string>
+          </property>
+         </widget>
+        </item>
         <item>
          <widget class="QPushButton" name="pushButtonUndo">
           <property name="text">
@@ -57,12 +77,68 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButtonShowMoves">
+         <widget class="QLabel" name="labelPromotion">
           <property name="text">
-           <string>Show Legal Moves</string>
+           <string>Promotion:</string>
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="QRadioButton" name="radioButtonQueen">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>♛</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="radioButtonRook">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>♜</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="radioButtonBishop">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>♝</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="radioButtonKnight">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>♞</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
          <widget class="QPushButton" name="pushButtonState">
           <property name="text">
@@ -139,10 +215,22 @@
         <item row="1" column="4">
          <widget class="QPushButton" name="F84">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -157,10 +245,22 @@
         <item row="1" column="2">
          <widget class="QPushButton" name="F82">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -175,10 +275,22 @@
         <item row="3" column="1">
          <widget class="QPushButton" name="F61">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -193,10 +305,22 @@
         <item row="1" column="1">
          <widget class="QPushButton" name="F81">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -211,10 +335,22 @@
         <item row="1" column="3">
          <widget class="QPushButton" name="F83">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -229,10 +365,22 @@
         <item row="6" column="1">
          <widget class="QPushButton" name="F31">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -247,10 +395,22 @@
         <item row="5" column="1">
          <widget class="QPushButton" name="F41">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -265,10 +425,22 @@
         <item row="1" column="8">
          <widget class="QPushButton" name="F88">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -283,10 +455,22 @@
         <item row="1" column="6">
          <widget class="QPushButton" name="F86">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -301,10 +485,22 @@
         <item row="1" column="5">
          <widget class="QPushButton" name="F85">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -319,10 +515,22 @@
         <item row="4" column="1">
          <widget class="QPushButton" name="F51">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -337,10 +545,22 @@
         <item row="7" column="1">
          <widget class="QPushButton" name="F21">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -356,7 +576,7 @@
          </widget>
         </item>
         <item row="8" column="1">
-         <widget class="QLabel" name="label">
+         <widget class="QLabel" name="labelA">
           <property name="text">
            <string>A</string>
           </property>
@@ -368,10 +588,22 @@
         <item row="1" column="7">
          <widget class="QPushButton" name="F87">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -386,10 +618,22 @@
         <item row="2" column="1">
          <widget class="QPushButton" name="F71">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -404,10 +648,22 @@
         <item row="0" column="1">
          <widget class="QPushButton" name="F91">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -430,7 +686,7 @@
          </widget>
         </item>
         <item row="7" column="0">
-         <widget class="QLabel" name="label_3">
+         <widget class="QLabel" name="label_1">
           <property name="text">
            <string>1</string>
           </property>
@@ -440,7 +696,7 @@
          </widget>
         </item>
         <item row="5" column="0">
-         <widget class="QLabel" name="label_4">
+         <widget class="QLabel" name="label_3">
           <property name="text">
            <string>3</string>
           </property>
@@ -450,7 +706,7 @@
          </widget>
         </item>
         <item row="4" column="0">
-         <widget class="QLabel" name="label_5">
+         <widget class="QLabel" name="label_4">
           <property name="text">
            <string>4</string>
           </property>
@@ -460,7 +716,7 @@
          </widget>
         </item>
         <item row="3" column="0">
-         <widget class="QLabel" name="label_6">
+         <widget class="QLabel" name="label_5">
           <property name="text">
            <string>5</string>
           </property>
@@ -470,7 +726,7 @@
          </widget>
         </item>
         <item row="2" column="0">
-         <widget class="QLabel" name="label_7">
+         <widget class="QLabel" name="label_6">
           <property name="text">
            <string>6</string>
           </property>
@@ -480,7 +736,7 @@
          </widget>
         </item>
         <item row="1" column="0">
-         <widget class="QLabel" name="label_8">
+         <widget class="QLabel" name="label_7">
           <property name="text">
            <string>7</string>
           </property>
@@ -490,7 +746,7 @@
          </widget>
         </item>
         <item row="0" column="0">
-         <widget class="QLabel" name="label_9">
+         <widget class="QLabel" name="label_8">
           <property name="text">
            <string>8</string>
           </property>
@@ -500,7 +756,7 @@
          </widget>
         </item>
         <item row="8" column="2">
-         <widget class="QLabel" name="label_10">
+         <widget class="QLabel" name="labelB">
           <property name="text">
            <string>B</string>
           </property>
@@ -510,7 +766,7 @@
          </widget>
         </item>
         <item row="8" column="3">
-         <widget class="QLabel" name="label_11">
+         <widget class="QLabel" name="labelC">
           <property name="text">
            <string>C</string>
           </property>
@@ -520,7 +776,7 @@
          </widget>
         </item>
         <item row="8" column="4">
-         <widget class="QLabel" name="label_12">
+         <widget class="QLabel" name="labelD">
           <property name="text">
            <string>D</string>
           </property>
@@ -530,7 +786,7 @@
          </widget>
         </item>
         <item row="8" column="5">
-         <widget class="QLabel" name="label_13">
+         <widget class="QLabel" name="labelE">
           <property name="text">
            <string>E</string>
           </property>
@@ -540,7 +796,7 @@
          </widget>
         </item>
         <item row="8" column="6">
-         <widget class="QLabel" name="label_14">
+         <widget class="QLabel" name="labelF">
           <property name="text">
            <string>F</string>
           </property>
@@ -550,7 +806,7 @@
          </widget>
         </item>
         <item row="8" column="7">
-         <widget class="QLabel" name="label_15">
+         <widget class="QLabel" name="labelG">
           <property name="text">
            <string>G</string>
           </property>
@@ -560,7 +816,7 @@
          </widget>
         </item>
         <item row="8" column="8">
-         <widget class="QLabel" name="label_16">
+         <widget class="QLabel" name="labelH">
           <property name="text">
            <string>H</string>
           </property>
@@ -572,10 +828,22 @@
         <item row="0" column="2">
          <widget class="QPushButton" name="F92">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -590,10 +858,22 @@
         <item row="0" column="3">
          <widget class="QPushButton" name="F93">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -608,10 +888,22 @@
         <item row="0" column="4">
          <widget class="QPushButton" name="F94">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -626,10 +918,22 @@
         <item row="0" column="5">
          <widget class="QPushButton" name="F95">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -644,10 +948,22 @@
         <item row="0" column="6">
          <widget class="QPushButton" name="F96">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -662,10 +978,22 @@
         <item row="0" column="7">
          <widget class="QPushButton" name="F97">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -680,10 +1008,22 @@
         <item row="0" column="8">
          <widget class="QPushButton" name="F98">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -698,10 +1038,22 @@
         <item row="2" column="2">
          <widget class="QPushButton" name="F72">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -716,10 +1068,22 @@
         <item row="2" column="3">
          <widget class="QPushButton" name="F73">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -734,10 +1098,22 @@
         <item row="2" column="4">
          <widget class="QPushButton" name="F74">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -752,10 +1128,22 @@
         <item row="2" column="5">
          <widget class="QPushButton" name="F75">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -770,10 +1158,22 @@
         <item row="2" column="6">
          <widget class="QPushButton" name="F76">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -788,10 +1188,22 @@
         <item row="2" column="7">
          <widget class="QPushButton" name="F77">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -806,10 +1218,22 @@
         <item row="2" column="8">
          <widget class="QPushButton" name="F78">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -824,10 +1248,22 @@
         <item row="3" column="2">
          <widget class="QPushButton" name="F62">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -842,10 +1278,22 @@
         <item row="3" column="3">
          <widget class="QPushButton" name="F63">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -860,10 +1308,22 @@
         <item row="3" column="4">
          <widget class="QPushButton" name="F64">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -878,10 +1338,22 @@
         <item row="3" column="5">
          <widget class="QPushButton" name="F65">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -896,10 +1368,22 @@
         <item row="3" column="6">
          <widget class="QPushButton" name="F66">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -914,10 +1398,22 @@
         <item row="3" column="7">
          <widget class="QPushButton" name="F67">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -932,10 +1428,22 @@
         <item row="3" column="8">
          <widget class="QPushButton" name="F68">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -950,10 +1458,22 @@
         <item row="4" column="2">
          <widget class="QPushButton" name="F52">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -968,10 +1488,22 @@
         <item row="4" column="3">
          <widget class="QPushButton" name="F53">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -986,10 +1518,22 @@
         <item row="4" column="4">
          <widget class="QPushButton" name="F54">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -1004,10 +1548,22 @@
         <item row="4" column="5">
          <widget class="QPushButton" name="F55">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -1022,10 +1578,22 @@
         <item row="4" column="6">
          <widget class="QPushButton" name="F56">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -1040,10 +1608,22 @@
         <item row="4" column="7">
          <widget class="QPushButton" name="F57">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -1058,10 +1638,22 @@
         <item row="4" column="8">
          <widget class="QPushButton" name="F58">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -1076,10 +1668,22 @@
         <item row="5" column="2">
          <widget class="QPushButton" name="F42">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -1094,10 +1698,22 @@
         <item row="5" column="3">
          <widget class="QPushButton" name="F43">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -1112,10 +1728,22 @@
         <item row="5" column="4">
          <widget class="QPushButton" name="F44">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -1130,10 +1758,22 @@
         <item row="5" column="5">
          <widget class="QPushButton" name="F45">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -1148,10 +1788,22 @@
         <item row="5" column="6">
          <widget class="QPushButton" name="F46">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -1166,10 +1818,22 @@
         <item row="5" column="7">
          <widget class="QPushButton" name="F47">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -1184,10 +1848,22 @@
         <item row="5" column="8">
          <widget class="QPushButton" name="F48">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -1202,10 +1878,22 @@
         <item row="6" column="2">
          <widget class="QPushButton" name="F32">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -1220,10 +1908,22 @@
         <item row="6" column="3">
          <widget class="QPushButton" name="F33">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -1238,10 +1938,22 @@
         <item row="6" column="4">
          <widget class="QPushButton" name="F34">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -1256,10 +1968,22 @@
         <item row="6" column="5">
          <widget class="QPushButton" name="F35">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -1274,10 +1998,22 @@
         <item row="6" column="6">
          <widget class="QPushButton" name="F36">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -1292,10 +2028,22 @@
         <item row="6" column="7">
          <widget class="QPushButton" name="F37">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -1310,10 +2058,22 @@
         <item row="6" column="8">
          <widget class="QPushButton" name="F38">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -1328,10 +2088,22 @@
         <item row="7" column="2">
          <widget class="QPushButton" name="F22">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -1346,10 +2118,22 @@
         <item row="7" column="3">
          <widget class="QPushButton" name="F23">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -1364,10 +2148,22 @@
         <item row="7" column="4">
          <widget class="QPushButton" name="F24">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -1382,10 +2178,22 @@
         <item row="7" column="5">
          <widget class="QPushButton" name="F25">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -1400,10 +2208,22 @@
         <item row="7" column="6">
          <widget class="QPushButton" name="F26">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -1421,10 +2241,22 @@
         <item row="7" column="7">
          <widget class="QPushButton" name="F27">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -1439,10 +2271,22 @@
         <item row="7" column="8">
          <widget class="QPushButton" name="F28">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -1465,7 +2309,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>652</width>
+     <width>521</width>
      <height>22</height>
     </rect>
    </property>

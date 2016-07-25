@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-#to-do: output FEN game states.
-        promotion
-        figure out why albert's example state fails at depth=4
-        turns out the two points above are related / the same.
+#to-do: promotion
         try on different architecture
 '''
 
@@ -20,7 +17,10 @@ MOVES_SIZE = 128
 PIECE_SIZE = 16
 PIECE_OFFSET = 8
 NUM_FLAGS = 4
+CHECK_OFFSET = 120
+MATE_OFFSET = 121
 COLOR_OFFSET = 122
+PASSANT_OFFSET = 123
 
 
 class ChessBoardCL:
@@ -40,7 +40,8 @@ class ChessBoardCL:
                                      -1, -5, -3, -4, -6, -7, -4, -3, -5, -1,
                                      -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
                                      -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-                                     1, 1, 1, 1, 0, 0, 0, 0], dtype=np.int32)  # default board, last row is junk & flags
+                                     0, 0, 1, 0, 0, 0, 0, 0], dtype=np.int32)  # default board, last row is flags:
+            # check, mate, turn color, en passant field, white a castle, h castle, black a castle, h castle ruled out
 
     def output(self):
         symcon = u' x♙♘♗♖♕♔;:♚♛♜♝♞♟x'
@@ -91,20 +92,58 @@ class ChessBoardCL:
         if flags[2] != '-':
             self.state[ord(flags[2][0])-86+10*int(flags[2][1])] = 8 if flags[2][1] == '3' else -8
 
+    def get_fen_state(self):
+        fen_state = ''
+        chr_piece = '  PNBRQKkqrbnp '
+        for rank in range(90, 10, -10):
+            empty_counter = 0
+            for file_ in range(1, 9, 1):    # loop from 1 to 8
+                if self.state[rank+file_] in (0, 8, -8):    # if nothing there simply increment
+                    empty_counter += 1
+                else:                       # if something is there
+                    if empty_counter:
+                        fen_state += str(empty_counter)     # first dump the counter if there is one
+                        fen_state += chr_piece[self.state[rank+file_]]      # then print the item
+                    else:
+                        fen_state += chr_piece[self.state[rank+file_]]      # then print the item
+                    empty_counter = 0
+            if empty_counter > 0:           # if there's something in the counter at the end
+                fen_state += str(empty_counter)             # dump it to the string
+            if rank > 20:
+                fen_state += '/'
+        fen_state += ' '
+        fen_state += 'w ' if self.state[COLOR_OFFSET] else 'b '
+        if self.state[BOARD_SIZE-NUM_FLAGS+1] == 0:
+            fen_state += 'K'
+        if self.state[BOARD_SIZE-NUM_FLAGS+0] == 0:
+            fen_state += 'Q'
+        if self.state[BOARD_SIZE-NUM_FLAGS+3] == 0:
+            fen_state += 'k'
+        if self.state[BOARD_SIZE-NUM_FLAGS+2] == 0:
+            fen_state += 'q'
+        if fen_state[-1] == ' ':
+            fen_state += '-'
+        fen_state += ' '
+        if self.state[PASSANT_OFFSET]:
+            fen_state += string_loc(self.state[PASSANT_OFFSET])
+        else:
+            fen_state += '-'
+        return fen_state
+
 
 class MoveArray:
     def __init__(self, move_array):
         self.move_array = move_array
 
     def convert(self):
-        start_array = self.move_array//128
-        goal_array = self.move_array % 128
+        start_array = (self.move_array//LOC_SIZE) % LOC_SIZE
+        goal_array = self.move_array % LOC_SIZE
         out = np.array([start_array, goal_array])
         return out.transpose()
 
     def convert2(self):
-        start_array = self.move_array//128
-        goal_array = self.move_array % 128
+        start_array = (self.move_array//LOC_SIZE) % LOC_SIZE
+        goal_array = self.move_array % LOC_SIZE
         return start_array, goal_array
 
 
@@ -127,7 +166,7 @@ class PerfTester:
         moves = np.zeros(MOVES_SIZE, dtype=np.int32)
         moves[0] = move
         new_states = self.apply_moves(self.game.state, moves)
-        self.game.state = new_states[0:128]
+        self.game.state = new_states[0:BOARD_SIZE]
 
     def get_legal_moves(self, states=None):
         if states is None:
@@ -286,14 +325,32 @@ helper functions:
 
 def output_moves(moves):
     out = []
+    pro = '   NBRQ'
     for move in moves:
-        out.append('{}{}-{}{}'.format(chr(move//BOARD_SIZE % 10+64), move//BOARD_SIZE//10-1,
+        if move > LOC_SIZE * LOC_SIZE:
+            promotion = move // (LOC_SIZE * LOC_SIZE)
+            move %= (LOC_SIZE * LOC_SIZE)
+            out.append('{}{}-{}{}{}'.format(chr(move//BOARD_SIZE % 10+64), move//BOARD_SIZE//10-1,
+                                      chr(move % BOARD_SIZE % 10+64), move % BOARD_SIZE//10-1, pro[promotion]))
+        else:
+            out.append('{}{}-{}{}'.format(chr(move//BOARD_SIZE % 10+64), move//BOARD_SIZE//10-1,
                                       chr(move % BOARD_SIZE % 10+64), move % BOARD_SIZE//10-1))
     print out
 
 
+def string_loc(loc):
+    return '{}{}'.format(chr(loc % 10 + 64), loc//10-1)
+
+
 def string_move(move):
-    return '{}{}-{}{}'.format(chr(move//BOARD_SIZE % 10+64), move//BOARD_SIZE//10-1,
+    if move > LOC_SIZE * LOC_SIZE:
+        pro = '   NBRQ'
+        promotion = move // (LOC_SIZE * LOC_SIZE)
+        move %= (LOC_SIZE * LOC_SIZE)
+        return '{}{}-{}{}{}'.format(chr(move//BOARD_SIZE % 10+64), move//BOARD_SIZE//10-1,
+                                      chr(move % BOARD_SIZE % 10+64), move % BOARD_SIZE//10-1, pro[promotion])
+    else:
+        return '{}{}-{}{}'.format(chr(move//BOARD_SIZE % 10+64), move//BOARD_SIZE//10-1,
                               chr(move % BOARD_SIZE % 10+64), move % BOARD_SIZE//10-1)
 
 
